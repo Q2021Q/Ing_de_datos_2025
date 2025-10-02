@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>ETLdimproducto</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description/>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <created_date>2025/09/29 11:05:32.593</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2025/09/29 11:05:32.593</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <order>
+    <hop>
+      <from>Leer Productos Origen</from>
+      <to>Mapear y Limpiar Campos</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Mapear y Limpiar Campos</from>
+      <to>Cargar dimProducto</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Cargar dimProducto</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <commit>1000</commit>
+    <connection>dwtiendarobert</connection>
+    <fields>
+      <field>
+        <column_name>productoID</column_name>
+        <stream_name>productoID</stream_name>
+      </field>
+      <field>
+        <column_name>codigoAlternativo</column_name>
+        <stream_name>codigoAlternativo</stream_name>
+      </field>
+      <field>
+        <column_name>nombreProducto</column_name>
+        <stream_name>nombreProducto</stream_name>
+      </field>
+      <field>
+        <column_name>categoriaProducto</column_name>
+        <stream_name>categoriaProducto</stream_name>
+      </field>
+      <field>
+        <column_name>familiaProducto</column_name>
+        <stream_name>familiaProducto</stream_name>
+      </field>
+      <field>
+        <column_name>fraccionario</column_name>
+        <stream_name>fraccionario</stream_name>
+      </field>
+      <field>
+        <column_name>valorUnidadMedida</column_name>
+        <stream_name>valorUnidadMedida</stream_name>
+      </field>
+      <field>
+        <column_name>unidadMedida</column_name>
+        <stream_name>unidadMedida</stream_name>
+      </field>
+    </fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <specify_fields>Y</specify_fields>
+    <table>dimproducto</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>N</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>864</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Leer Productos Origen</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>tiendarobert_origen</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+    p.id AS productoID,
+    p.nombreProducto,
+    c.categoria AS categoriaProducto,
+    f.familia AS familiaProducto,
+    p.fraccionario,
+	m.unidad AS valorUnidadMedida,
+	m.simbolo AS unidadMedida,
+    um.unidad AS presentacion
+FROM
+    productos p
+JOIN
+    categorias c ON p.categoria = c.id
+JOIN
+    familias f ON p.familia = f.id
+JOIN
+    unidad_medidas um ON p.medidamh = um.id
+JOIN medidas m ON m.id = p.medida;
+</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>192</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Mapear y Limpiar Campos</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <length>-2</length>
+        <name>productoID</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>codigoAlternativo</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>nombreProducto</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>categoriaProducto</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>familiaProducto</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>fraccionario</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>valorUnidadMedida</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>unidadMedida</name>
+        <precision>-2</precision>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>544</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>
