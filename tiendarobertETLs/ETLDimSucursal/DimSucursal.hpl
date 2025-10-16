@@ -57,8 +57,8 @@
         <stream_name>nombreSucursal</stream_name>
       </field>
       <field>
-        <column_name>tipoEstablecimiento</column_name>
-        <stream_name>tipoEstablecimiento</stream_name>
+        <column_name>tipoEstableCimiento</column_name>
+        <stream_name>tipoEstableCimiento</stream_name>
       </field>
       <field>
         <column_name>codigoEstablecimiento</column_name>
@@ -113,30 +113,34 @@
         <stream_name>codigoDepSucursal</stream_name>
       </field>
       <field>
-        <column_name>municipioSucurdal</column_name>
-        <stream_name>municipioSucurdal</stream_name>
+        <column_name>municipioSucursal</column_name>
+        <stream_name>municipioSucursal</stream_name>
       </field>
       <field>
         <column_name>codigoMunSucursal</column_name>
         <stream_name>codigoMunSucursal</stream_name>
       </field>
       <field>
-        <column_name>distritoSucurdal</column_name>
-        <stream_name>distritoSucurdal</stream_name>
+        <column_name>distritoSucursal</column_name>
+        <stream_name>distritoSucursal</stream_name>
       </field>
       <field>
-        <column_name>coidgoDisSucursal</column_name>
-        <stream_name>coidgoDisSucursal</stream_name>
+        <column_name>codigoDisSucursal</column_name>
+        <stream_name>codigoDisSucursal</stream_name>
       </field>
     </fields>
     <ignore_errors>N</ignore_errors>
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
     <return_keys>N</return_keys>
+    <schema/>
     <specify_fields>Y</specify_fields>
     <table>DimSucursal</table>
+    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>N</truncate>
@@ -167,7 +171,7 @@
     s.id AS numeroSucursal,
     s.nombre AS nombreSucursal,
     IFNULL(te.nombre, 'No especificado') AS tipoEstableCimiento,
-    s.codigo AS codigoEstableCimiento, -- CAMPO AGREGADO
+    s.codigo AS codigoEstablecimiento, -- CAMPO AGREGADO
     e.empresa AS nombreEmpresa,
     e.giro AS giroEmpresa,
     e.desActividad AS actividadEconomicaEmpresa,
@@ -182,10 +186,10 @@
     -- Se reutilizan los datos de la empresa para la sucursal
     d.departamento AS departamentoSucursal, -- CAMPO AGREGADO
     d.codigo AS codigoDepSucursal, -- CAMPO AGREGADO
-    m.municipio AS municipioSucurdal, -- CAMPO AGREGADO
+    m.municipio AS municipioSucursal, -- CAMPO AGREGADO
     m.codigo AS codigoMunSucursal, -- CAMPO AGREGADO
-    di.distrito AS distritoSucurdal, -- CAMPO AGREGADO
-    di.codigo AS coidgoDisSucursal -- CAMPO AGREGADO
+    di.distrito AS distritoSucursal, -- CAMPO AGREGADO
+    di.codigo AS codigoDisSucursal -- CAMPO AGREGADO
     
 FROM
     sucursales s
