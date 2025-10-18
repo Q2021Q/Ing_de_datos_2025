@@ -21,11 +21,6 @@
   </notepads>
   <order>
     <hop>
-      <from>LeerTransaccion</from>
-      <to>LookupDimProducto</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>LookupDimProducto</from>
       <to>LookupDimSucursal</to>
       <enabled>Y</enabled>
@@ -53,6 +48,11 @@
     <hop>
       <from>LookupDimProveedor</from>
       <to>CargarfactMovimiento</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LeerTransaccion</from>
+      <to>Group by Producto</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -145,6 +145,7 @@
     <limit>0</limit>
     <sql>-- Ventas
 SELECT
+    prod.id AS producto_id,
     vd.cantidad AS cantidadDeProducto,
     p.costosiva AS costoSinIva,
     p.costociva AS costoConIva,
@@ -153,7 +154,6 @@ SELECT
     0 AS proveedor_id, -- El proveedor lo registra la compra de productos
 	DATE(v.fecha) AS fechaMovimiento,
     DATE('1970-01-01') AS fechaCaducidad, -- La fecha de caducidad para cada producto lo registra la compra
-    prod.id AS producto_id,
 	'VEN' AS tipoMovimineto
 FROM
     ventas_detalles AS vd
@@ -163,13 +163,13 @@ JOIN
     productos AS prod ON vd.producto = prod.id
 JOIN
     precios AS p ON prod.id = p.producto
-WHERE v.sucursal = 1;
-    </sql>
+WHERE v.sucursal = 1 AND DATE(v.fecha) = '2024-01-01'
+ORDER BY prod.id;</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>448</xloc>
-      <yloc>64</yloc>
+      <xloc>464</xloc>
+      <yloc>48</yloc>
     </GUI>
   </transform>
   <transform>
@@ -194,7 +194,9 @@ WHERE v.sucursal = 1;
         <condition>=</condition>
         <field>productoID</field>
         <name>producto_id</name>
+        <name2/>
       </key>
+      <orderby/>
       <schema>TiendaRobertDW2025</schema>
       <table>DimProducto</table>
       <value>
@@ -404,6 +406,157 @@ WHERE v.sucursal = 1;
     <GUI>
       <xloc>448</xloc>
       <yloc>304</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Calculator</name>
+    <type>Calculator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <calculation>
+      <calc_type>ADD</calc_type>
+      <conversion_mask/>
+      <currency_symbol/>
+      <decimal_symbol/>
+      <field_a/>
+      <field_b/>
+      <field_c/>
+      <field_name>Suma</field_name>
+      <grouping_symbol/>
+      <remove>N</remove>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <value_type/>
+    </calculation>
+    <failIfNoFile>Y</failIfNoFile>
+    <attributes/>
+    <GUI>
+      <xloc>816</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Group by Producto</name>
+    <type>GroupBy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <add_linenr>N</add_linenr>
+    <all_rows>N</all_rows>
+    <directory>${java.io.tmpdir}</directory>
+    <fields>
+      <field>
+        <aggregate>producto_id</aggregate>
+        <subject>producto_id</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>cantidadDeProducto</aggregate>
+        <subject>cantidadDeProducto</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>costoSinIva</aggregate>
+        <subject>costoSinIva</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>costoConIva</aggregate>
+        <subject>costoConIva</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>margenUtilidad</aggregate>
+        <subject>margenUtilidad</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>sucursal_id</aggregate>
+        <subject>sucursal_id</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>proveedor_id</aggregate>
+        <subject>proveedor_id</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>fechaMovimiento</aggregate>
+        <subject>fechaMovimiento</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>fechaCaducidad</aggregate>
+        <subject>fechaCaducidad</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>tipoMovimineto</aggregate>
+        <subject>tipoMovimineto</subject>
+        <type>-</type>
+        <valuefield/>
+      </field>
+    </fields>
+    <give_back_row>N</give_back_row>
+    <group>
+      <field>
+        <name>producto_id</name>
+      </field>
+      <field>
+        <name>cantidadDeProducto</name>
+      </field>
+      <field>
+        <name>costoSinIva</name>
+      </field>
+      <field>
+        <name>costoConIva</name>
+      </field>
+      <field>
+        <name>margenUtilidad</name>
+      </field>
+      <field>
+        <name>sucursal_id</name>
+      </field>
+      <field>
+        <name>proveedor_id</name>
+      </field>
+      <field>
+        <name>fechaMovimiento</name>
+      </field>
+      <field>
+        <name>fechaCaducidad</name>
+      </field>
+      <field>
+        <name>tipoMovimineto</name>
+      </field>
+    </group>
+    <ignore_aggregate>N</ignore_aggregate>
+    <linenr_fieldname/>
+    <prefix>grp</prefix>
+    <attributes/>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>96</yloc>
     </GUI>
   </transform>
   <transform_error_handling>
