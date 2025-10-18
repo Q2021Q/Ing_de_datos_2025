@@ -11,14 +11,9 @@ CREATE TABLE DimSucursal (
   sucursalID BIGINT UNSIGNED NOT NULL,
   numeroSucursal INT NOT NULL,
   nombreSucursal VARCHAR(255) NOT NULL,
-  tipoEstablecimiento VARCHAR(255) NOT NULL,
+  direccionSucursal VARCHAR(255) NOT NULL,
   codigoEstablecimiento VARCHAR(10) NOT NULL,
-  departamentoSucursal VARCHAR(255) NOT NULL,
-  codigoDepartamento VARCHAR(2) NOT NULL,
-  municipioSucursal VARCHAR(100) NOT NULL,
-  codigoMunicipio VARCHAR(2) NOT NULL,
-  distritoSucursal VARCHAR(100) NOT NULL,
-  codigoDistrito VARCHAR(2) NOT NULL,
+  tipoEstablecimiento VARCHAR(255) NOT NULL,
   PRIMARY KEY (sucursalKey)
 ) ENGINE=InnoDB;
 
