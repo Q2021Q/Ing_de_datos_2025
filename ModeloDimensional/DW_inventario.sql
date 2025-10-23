@@ -65,18 +65,12 @@ CREATE TABLE factInventario (
   costoSinIva        DECIMAL(18,4) NOT NULL,
   costoConIva        DECIMAL(18,4) NOT NULL,
 
-  -- (Opcional pero recomendado) clave primaria compuesta
+  -- clave primaria compuesta
   PRIMARY KEY (sucursalKey, productoKey, fechaInventarioKey),
 
-  -- Índices por dimensiones (ayudan a FK y lecturas)
-  INDEX factInv_productoKey_idx        (productoKey),
-  INDEX factInv_sucursalKey_idx        (sucursalKey),
-  INDEX factInv_fechaInventarioKey_idx (fechaInventarioKey),
-
-  -- Índices compuestos para lecturas típicas
-  INDEX factInv_ix_prod_fecha   (productoKey, fechaInventarioKey),
-  INDEX factInv_ix_suc_fecha    (sucursalKey, fechaInventarioKey),
-  INDEX factInv_ix_suc_prod_fec (sucursalKey, productoKey, fechaInventarioKey),
+  INDEX factInv_ix_prod_fecha (productoKey, fechaInventarioKey),
+  INDEX factInv_ix_suc_fecha  (sucursalKey, fechaInventarioKey),
+  INDEX ix_fecha_ps           (fechaInventarioKey, sucursalKey, productoKey),
 
   -- FKs (nombres únicos en el esquema)
   CONSTRAINT fk_factInv_productoKey_fk

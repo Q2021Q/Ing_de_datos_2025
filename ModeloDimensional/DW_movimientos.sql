@@ -74,16 +74,14 @@ CREATE TABLE factMovimiento (
   costoSinIva        DECIMAL(18,4) NOT NULL,
   costoConIva        DECIMAL(18,4) NOT NULL,
 
-  -- Índices por dimensiones
-  INDEX fk_fact_productoKey        (productoKey),
-  INDEX fk_fact_sucursalKey        (sucursalKey),
-  INDEX fk_fact_tipoMovimientoKey  (tipoMovimientoKey),
-  INDEX fk_fact_fechaMovimientoKey (fechaMovimientoKey),
+  -- Clave primaria compuesta
+  PRIMARY KEY (sucursalKey, productoKey, fechaMovimientoKey, tipoMovimientoKey),
 
-  -- Índices compuestos para lecturas típicas
-  INDEX ix_prod_fecha              (productoKey, fechaMovimientoKey),
-  INDEX ix_suc_fecha               (sucursalKey, fechaMovimientoKey),
-  INDEX ix_suc_prod_fecha          (sucursalKey, productoKey, fechaMovimientoKey),
+  -- Lecturas típicas
+  INDEX ix_prod_fecha      (productoKey, fechaMovimientoKey),
+  INDEX ix_suc_fecha       (sucursalKey, fechaMovimientoKey),
+  INDEX ix_tipo_fecha      (tipoMovimientoKey, fechaMovimientoKey),
+  INDEX ix_fecha_suc_prod  (fechaMovimientoKey, sucursalKey, productoKey),
 
   -- FKs (integridad referencial)
   CONSTRAINT fk_fact_productoKey_fk
