@@ -1,9 +1,18 @@
-
--- Compras
+-- Inventario Inicial
+SELECT 
+	producto AS producto_id,
+	sucursal AS sucursal_id,
+	DATE(fecha) AS fechaMovimiento,
+    cantidad AS cantidadDeProducto,
+    costo_unit_si AS costoSinIva,
+    costo_unit_ci AS costoConIva
+FROM
+    inventario_inicial
+    UNION ALL
+-- Compras -------------------------------------------------------
 SELECT 
 	prod.id AS producto_id,
 	c.sucursal AS sucursal_id,
-	'COM' AS tipoMovimineto,
 	DATE(c.fecha) AS fechaMovimiento,
 	cd.cantidad AS cantidadDeProducto,
     p.costosiva AS costoSinIva,
@@ -21,9 +30,8 @@ UNION ALL
 SELECT
     prod.id AS producto_id,
 	v.sucursal AS sucursal_id,
-    'VEN' AS tipoMovimineto,
 	DATE(v.fecha) AS fechaMovimiento,
-    vd.cantidad AS cantidadDeProducto,
+    vd.cantidad*(-1) AS cantidadDeProducto,
     p.costosiva AS costoSinIva,
     p.costociva AS costoConIva
 FROM
@@ -39,7 +47,6 @@ UNION ALL
 SELECT
     prod.id AS producto_id,
 	d.sucursal AS sucursal_id,
-    'DEV' AS tipoMovimineto,
 	DATE(d.fecha) AS fechaMovimiento,
     dd.cantidad AS cantidadDeProducto,
     p.costosiva AS costoSinIva,
@@ -57,7 +64,6 @@ UNION ALL
 SELECT
     prod.id AS producto_id,
 	a.sucursal AS sucursal_id,
-    'ANL' AS tipoMovimineto,
 	DATE(a.fecha) AS fechaMovimiento,
     ad.cantidad AS cantidadDeProducto,
     p.costosiva AS costoSinIva,

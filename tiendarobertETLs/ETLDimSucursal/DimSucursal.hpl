@@ -45,10 +45,6 @@
         <stream_name>sucursalID</stream_name>
       </field>
       <field>
-        <column_name>nitEmpresa</column_name>
-        <stream_name>nitEmpresa</stream_name>
-      </field>
-      <field>
         <column_name>numeroSucursal</column_name>
         <stream_name>numeroSucursal</stream_name>
       </field>
@@ -57,86 +53,30 @@
         <stream_name>nombreSucursal</stream_name>
       </field>
       <field>
-        <column_name>tipoEstablecimiento</column_name>
-        <stream_name>tipoEstablecimiento</stream_name>
+        <column_name>direccionSucursal</column_name>
+        <stream_name>direccionSucursal</stream_name>
       </field>
       <field>
         <column_name>codigoEstablecimiento</column_name>
         <stream_name>codigoEstablecimiento</stream_name>
       </field>
       <field>
-        <column_name>nombreEmpresa</column_name>
-        <stream_name>nombreEmpresa</stream_name>
-      </field>
-      <field>
-        <column_name>giroEmpresa</column_name>
-        <stream_name>giroEmpresa</stream_name>
-      </field>
-      <field>
-        <column_name>actividadEconomicaEmpresa</column_name>
-        <stream_name>actividadEconomicaEmpresa</stream_name>
-      </field>
-      <field>
-        <column_name>codigoActividadEE</column_name>
-        <stream_name>codigoActividadEE</stream_name>
-      </field>
-      <field>
-        <column_name>departamentoEmpresa</column_name>
-        <stream_name>departamentoEmpresa</stream_name>
-      </field>
-      <field>
-        <column_name>codigoDepEmpresa</column_name>
-        <stream_name>codigoDepEmpresa</stream_name>
-      </field>
-      <field>
-        <column_name>municipioEmpresa</column_name>
-        <stream_name>municipioEmpresa</stream_name>
-      </field>
-      <field>
-        <column_name>codigoMunEmpresa</column_name>
-        <stream_name>codigoMunEmpresa</stream_name>
-      </field>
-      <field>
-        <column_name>distritoEmpresa</column_name>
-        <stream_name>distritoEmpresa</stream_name>
-      </field>
-      <field>
-        <column_name>codigoDisEmpresa</column_name>
-        <stream_name>codigoDisEmpresa</stream_name>
-      </field>
-      <field>
-        <column_name>departamentoSucursal</column_name>
-        <stream_name>departamentoSucursal</stream_name>
-      </field>
-      <field>
-        <column_name>codigoDepSucursal</column_name>
-        <stream_name>codigoDepSucursal</stream_name>
-      </field>
-      <field>
-        <column_name>municipioSucurdal</column_name>
-        <stream_name>municipioSucurdal</stream_name>
-      </field>
-      <field>
-        <column_name>codigoMunSucursal</column_name>
-        <stream_name>codigoMunSucursal</stream_name>
-      </field>
-      <field>
-        <column_name>distritoSucurdal</column_name>
-        <stream_name>distritoSucurdal</stream_name>
-      </field>
-      <field>
-        <column_name>coidgoDisSucursal</column_name>
-        <stream_name>coidgoDisSucursal</stream_name>
+        <column_name>tipoEstableCimiento</column_name>
+        <stream_name>tipoEstableCimiento</stream_name>
       </field>
     </fields>
     <ignore_errors>N</ignore_errors>
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
     <return_keys>N</return_keys>
+    <schema/>
     <specify_fields>Y</specify_fields>
     <table>DimSucursal</table>
+    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>N</truncate>
@@ -162,43 +102,17 @@
     <execute_each_row>N</execute_each_row>
     <limit>0</limit>
     <sql>SELECT
-   s.id AS sucursalID,
-    e.nit AS nitEmpresa,
+    s.id AS sucursalID,
     s.id AS numeroSucursal,
     s.nombre AS nombreSucursal,
-    IFNULL(te.nombre, 'No especificado') AS tipoEstableCimiento,
-    s.codigo AS codigoEstableCimiento, -- CAMPO AGREGADO
-    e.empresa AS nombreEmpresa,
-    e.giro AS giroEmpresa,
-    e.desActividad AS actividadEconomicaEmpresa,
-    'N/A' AS codigoActividadEE,
-    d.departamento AS departamentoEmpresa,
-    d.codigo AS codigoDepEmpresa, -- CAMPO AGREGADO
-    m.municipio AS municipioEmpresa,
-    m.codigo AS codigoMunEmpresa, -- CAMPO AGREGADO
-    di.distrito AS distritoEmpresa,
-    di.codigo AS codigoDisEmpresa, -- CAMPO AGREGADO
-    
-    -- Se reutilizan los datos de la empresa para la sucursal
-    d.departamento AS departamentoSucursal, -- CAMPO AGREGADO
-    d.codigo AS codigoDepSucursal, -- CAMPO AGREGADO
-    m.municipio AS municipioSucurdal, -- CAMPO AGREGADO
-    m.codigo AS codigoMunSucursal, -- CAMPO AGREGADO
-    di.distrito AS distritoSucurdal, -- CAMPO AGREGADO
-    di.codigo AS coidgoDisSucursal -- CAMPO AGREGADO
+    s.direccion AS direccionSucursal,
+    s.codigo AS codigoEstablecimiento,
+    IFNULL(te.nombre, 'No especificado') AS tipoEstableCimiento
     
 FROM
     sucursales s
-JOIN
-    empresas e ON s.empresa = e.id
 LEFT JOIN
-    tipo_establecimientos te ON s.tipo_establecimiento = te.id
-JOIN
-    departamentos d ON e.departamento = d.id
-JOIN
-    municipios m ON e.municipio = m.id
-JOIN
-    distritos di ON e.distrito = di.id;</sql>
+    tipo_establecimientos te ON s.tipo_establecimiento = te.id</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
