@@ -103,10 +103,14 @@
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
     <return_keys>N</return_keys>
+    <schema>tiendarobertdw2025</schema>
     <specify_fields>Y</specify_fields>
-    <table>factMovimiento</table>
+    <table>factmovimiento</table>
+    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>N</truncate>
@@ -136,19 +140,16 @@
         <aggregate>cantidad_total</aggregate>
         <subject>cantidadDeProducto</subject>
         <type>SUM</type>
-        <valuefield/>
       </field>
       <field>
         <aggregate>costoSinIva_total</aggregate>
         <subject>costoSinIva</subject>
         <type>SUM</type>
-        <valuefield/>
       </field>
       <field>
         <aggregate>costoConIva_total</aggregate>
         <subject>costoConIva</subject>
         <type>SUM</type>
-        <valuefield/>
       </field>
     </fields>
     <give_back_row>N</give_back_row>
@@ -167,7 +168,6 @@
       </field>
     </group>
     <ignore_aggregate>N</ignore_aggregate>
-    <linenr_fieldname/>
     <prefix>grp</prefix>
     <attributes/>
     <GUI>
@@ -290,7 +290,9 @@ JOIN
         <condition>=</condition>
         <field>productoID</field>
         <name>producto_id</name>
+        <name2/>
       </key>
+      <orderby/>
       <schema>TiendaRobertDW2025</schema>
       <table>DimProducto</table>
       <value>
@@ -329,7 +331,9 @@ JOIN
         <condition>=</condition>
         <field>sucursalID</field>
         <name>sucursal_id</name>
+        <name2/>
       </key>
+      <orderby/>
       <schema>tiendarobertdw2025</schema>
       <table>DimSucursal</table>
       <value>
@@ -368,7 +372,9 @@ JOIN
         <condition>=</condition>
         <field>tipoMovimiento</field>
         <name>tipoMovimineto</name>
+        <name2/>
       </key>
+      <orderby/>
       <schema>tiendarobertdw2025</schema>
       <table>DimTipoMovimiento</table>
       <value>

@@ -1,0 +1,8 @@
+ 
+PASO 1
+crea el full_dump (todos los Script)  comando : copy /b *.sql full_dump.sql
+
+PASO 2 
+Ejecuta el script comando : "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p tiendarobert_bd_poblado < full_dump.sql
+
+ 

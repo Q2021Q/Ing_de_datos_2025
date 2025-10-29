@@ -1,0 +1,11 @@
+{
+  "type": "DatabaseMeta",
+  "name": "SRC_DB",
+  "databaseType": "MYSQL",
+  "accessType": "Native",
+  "hostname": "${SRC_DB_HOST}",
+  "port": "${SRC_DB_PORT}",
+  "databaseName": "${SRC_DB_NAME}",
+  "username": "${SRC_DB_USER}",
+  "password": "${SRC_DB_PASS}"
+}

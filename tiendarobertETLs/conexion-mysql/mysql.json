@@ -1,17 +1,43 @@
 {
-    "config" : {
-        "variables" : [
-            { "name": "SRC_DB_HOST", "value": "localhost" },
-            { "name": "SRC_DB_PORT", "value": "3306" },
-            { "name": "SRC_DB_NAME", "value": "TiendaRobert_BD_Poblado" },
-            { "name": "SRC_DB_USER", "value": "root" },
-            { "name": "SRC_DB_PASS", "value": "root" },
-
-            { "name": "DWH_DB_HOST", "value": "localhost" },
-            { "name": "DWH_DB_PORT", "value": "3306" },
-            { "name": "DWH_DB_NAME", "value": "TiendaRobertDW2025" },
-            { "name": "DWH_DB_USER", "value": "root" },
-            { "name": "DWH_DB_PASS", "value": "root" }
-        ]
-    }
+  "variables" : [ {
+    "name" : "SRC_DB_HOST",
+    "value" : "localhost",
+    "description" : ""
+  }, {
+    "name" : "SRC_DB_PORT",
+    "value" : "3306",
+    "description" : ""
+  }, {
+    "name" : "SRC_DB_NAME",
+    "value" : "tiendarobert_bd_poblado",
+    "description" : ""
+  }, {
+    "name" : "SRC_DB_USER",
+    "value" : "root",
+    "description" : ""
+  }, {
+    "name" : "SRC_DB_PASS",
+    "value" : "admin",
+    "description" : ""
+  }, {
+    "name" : "DWH_DB_HOST",
+    "value" : "localhost",
+    "description" : ""
+  }, {
+    "name" : "DWH_DB_PORT",
+    "value" : "3306",
+    "description" : ""
+  }, {
+    "name" : "DWH_DB_NAME",
+    "value" : "tiendarobertdw2025",
+    "description" : ""
+  }, {
+    "name" : "DWH_DB_USER",
+    "value" : "root",
+    "description" : ""
+  }, {
+    "name" : "DWH_DB_PASS",
+    "value" : "admin",
+    "description" : ""
+  } ]
 }

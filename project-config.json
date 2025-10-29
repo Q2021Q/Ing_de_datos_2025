@@ -1,0 +1,11 @@
+{
+  "description": "Proyecto de Ingeniería de Datos 2025",
+  "metadataBaseFolder": "C:/ApacheHop/apache-hop-client-2.15.0/hop/config/projects/Ing_de_datos_2025/metadata",
+  "unitTestsBasePath": "",
+  "dataSetsCsvFolder": "",
+  "enforcingExecutionInHome": false,
+  "projectHome": "C:/ApacheHop/apache-hop-client-2.15.0/hop/config/projects/Ing_de_datos_2025",
+  "config": {
+    "variables": []
+  }
+}

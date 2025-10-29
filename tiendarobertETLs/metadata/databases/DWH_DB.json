@@ -1,0 +1,16 @@
+{
+  "type": "DatabaseMeta",
+  "name": "DWH_DB",
+  "databaseType": "MYSQL",
+  "accessType": "Native",
+  "hostname": "${DWH_DB_HOST}",
+  "port": "${DWH_DB_PORT}",
+  "databaseName": "${DWH_DB_NAME}",
+  "username": "${DWH_DB_USER}",
+  "password": "${DWH_DB_PASS}",
+  "attributes": {
+    "EXTRA_OPTION_MYSQL.useCursorFetch": "true",
+    "EXTRA_OPTION_MYSQL.defaultFetchSize": "500",
+    "EXTRA_OPTION_MYSQL.zeroDateTimeBehavior": "CONVERT_TO_NULL"
+  }
+}
