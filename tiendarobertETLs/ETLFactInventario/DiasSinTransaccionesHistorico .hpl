@@ -259,6 +259,31 @@
     </GUI>
   </transform>
   <transform>
+    <name>LeerCostosUnitarios</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>SRC_MYSQL</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT 
+producto AS productoID_SRC, 
+costosiva AS costosiva_SRC, costociva AS costociva_SRC 
+FROM precios;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>352</xloc>
+      <yloc>400</yloc>
+    </GUI>
+  </transform>
+  <transform>
     <name>LeerFechas</name>
     <type>TableInput</type>
     <description/>
@@ -375,6 +400,46 @@ WHERE fechaInventarioKey = 20231231;</sql>
     </GUI>
   </transform>
   <transform>
+    <name>LookupCostosUnitarios                                            </name>
+    <type>StreamLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <from>LeerCostosUnitarios</from>
+    <input_sorted>N</input_sorted>
+    <preserve_memory>Y</preserve_memory>
+    <sorted_list>N</sorted_list>
+    <integer_pair>N</integer_pair>
+    <lookup>
+      <key>
+        <name>productoID</name>
+        <field>productoID_SRC</field>
+      </key>
+      <value>
+        <name>costosiva_SRC</name>
+        <rename>costoSinIva_uni</rename>
+        <default>0</default>
+        <type>Number</type>
+      </value>
+      <value>
+        <name>costociva_SRC</name>
+        <rename>costoConIva_uni</rename>
+        <default>0</default>
+        <type>Number</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>400</yloc>
+    </GUI>
+  </transform>
+  <transform>
     <name>LookupStockBase                                 </name>
     <type>StreamLookup</type>
     <description/>
@@ -454,6 +519,7 @@ WHERE fechaInventarioKey = 20231231;</sql>
       <schema_name/>
     </partitioning>
     <compress>N</compress>
+    <compress_variables/>
     <directory>${java.io.tmpdir}</directory>
     <fields>
       <field>
@@ -481,6 +547,7 @@ WHERE fechaInventarioKey = 20231231;</sql>
         <presorted>N</presorted>
       </field>
     </fields>
+    <free_memory/>
     <sort_prefix>out</sort_prefix>
     <sort_size>1000000</sort_size>
     <unique_rows>N</unique_rows>
@@ -604,13 +671,11 @@ WHERE fechaInventarioKey = 20231231;</sql>
         <length>-2</length>
         <name>productoKey</name>
         <precision>-2</precision>
-        <rename/>
       </field>
       <field>
         <length>-2</length>
         <name>sucursalKey</name>
         <precision>-2</precision>
-        <rename/>
       </field>
       <field>
         <length>-2</length>
@@ -769,71 +834,6 @@ if (faltante == 0) {
     <GUI>
       <xloc>352</xloc>
       <yloc>480</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>LeerCostosUnitarios</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>SRC_MYSQL</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT 
-producto AS productoID_SRC, 
-costosiva AS costosiva_SRC, costociva AS costociva_SRC 
-FROM precios;</sql>
-    <variables_active>N</variables_active>
-    <attributes/>
-    <GUI>
-      <xloc>352</xloc>
-      <yloc>400</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>LookupCostosUnitarios                                            </name>
-    <type>StreamLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <from>LeerCostosUnitarios</from>
-    <input_sorted>N</input_sorted>
-    <preserve_memory>Y</preserve_memory>
-    <sorted_list>N</sorted_list>
-    <integer_pair>N</integer_pair>
-    <lookup>
-      <key>
-        <name>productoID</name>
-        <field>productoID_SRC</field>
-      </key>
-      <value>
-        <name>costosiva_SRC</name>
-        <rename>costoSinIva_uni</rename>
-        <default>0</default>
-        <type>Number</type>
-      </value>
-      <value>
-        <name>costociva_SRC</name>
-        <rename>costoConIva_uni</rename>
-        <default>0</default>
-        <type>Number</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <GUI>
-      <xloc>160</xloc>
-      <yloc>400</yloc>
     </GUI>
   </transform>
   <transform_error_handling>
