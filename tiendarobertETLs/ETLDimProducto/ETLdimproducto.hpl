@@ -9,11 +9,6 @@
     <pipeline_type>Normal</pipeline_type>
     <pipeline_status>0</pipeline_status>
     <parameters>
-      <parameter>
-        <name>FECHA_INICIO_PRODUCTOS</name>
-        <default_value>2024-01-01 00:00:00</default_value>
-        <description/>
-      </parameter>
     </parameters>
     <capture_transform_performance>N</capture_transform_performance>
     <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
@@ -27,23 +22,112 @@
   </notepads>
   <order>
     <hop>
-      <from>Leer Productos Origen</from>
-      <to>Mapear y Limpiar Campos</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Mapear y Limpiar Campos</from>
-      <to>Cargar dimProducto</to>
+      <from>FechaInventarioLookup</from>
+      <to>FechaActualLookup</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>LeerFechaCorte</from>
-      <to>Leer Productos Origen</to>
+      <to>FechaInventarioLookup</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>FechaActualLookup</from>
+      <to>FormatoFecha</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>FormatoFecha</from>
+      <to>LeerProductosNuevos</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>FormatoFecha</from>
+      <to>LeerProductosActualizados</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LeerProductosActualizados</from>
+      <to>ActualizarProductos</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LeerProductosNuevos</from>
+      <to>ProductoLookup</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>ProductoLookup</from>
+      <to>VerificarProducto</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>VerificarProducto</from>
+      <to>CargarProductosNuevos</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <transform>
-    <name>Cargar dimProducto</name>
+    <name>ActualizarProductos</name>
+    <type>Update</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <commit>100</commit>
+    <connection>DWH_MYSQL</connection>
+    <error_ignored>N</error_ignored>
+    <lookup>
+      <key>
+        <condition>=</condition>
+        <field>productoID</field>
+        <name>productoID</name>
+      </key>
+      <schema>tiendarobertdw2025</schema>
+      <table>dimproducto</table>
+      <value>
+        <name>nombreProducto</name>
+        <rename>nombreProducto</rename>
+      </value>
+      <value>
+        <name>categoriaProducto</name>
+        <rename>categoriaProducto</rename>
+      </value>
+      <value>
+        <name>familiaProducto</name>
+        <rename>familiaProducto</rename>
+      </value>
+      <value>
+        <name>fraccionario</name>
+        <rename>fraccionario</rename>
+      </value>
+      <value>
+        <name>valorUnidadMedida</name>
+        <rename>valorUnidadMedida</rename>
+      </value>
+      <value>
+        <name>unidadMedida</name>
+        <rename>unidadMedida</rename>
+      </value>
+      <value>
+        <name>presentacion</name>
+        <rename>presentacion</rename>
+      </value>
+    </lookup>
+    <skip_lookup>N</skip_lookup>
+    <use_batch>N</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>928</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>CargarProductosNuevos</name>
     <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
@@ -104,13 +188,51 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>864</xloc>
-      <yloc>224</yloc>
+      <xloc>944</xloc>
+      <yloc>416</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Leer Productos Origen</name>
-    <type>TableInput</type>
+    <name>FechaActualLookup</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>DWH_MYSQL</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>tiempoKey</field>
+        <name>fecha_actual</name>
+      </key>
+      <schema>tiendarobertdw2025</schema>
+      <table>dimtiempo</table>
+      <value>
+        <name>fecha</name>
+        <rename>fechaActual_fdf</rename>
+        <trim_type>none</trim_type>
+        <type>Date</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>384</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>FechaInventarioLookup</name>
+    <type>DBLookup</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -119,42 +241,70 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>SRC_MYSQL</connection>
-    <execute_each_row>Y</execute_each_row>
-    <limit>0</limit>
-    <lookup>LeerFechaCorte</lookup>
-    <sql>SELECT
-    p.id AS productoID,
-    p.nombreProducto,
-    c.categoria AS categoriaProducto,
-    f.familia AS familiaProducto,
-    IFNULL(p.fraccionario, 'No') AS fraccionario,
-    um.simbolo AS valorUnidadMedida,
-    um.unidad AS unidadMedida,
-    'No especificado' AS presentacion
-FROM
-    productos p
-JOIN
-    categorias c ON p.categoria = c.id
-JOIN
-    familias f ON p.familia = f.id
-JOIN
-    unidad_medidas um ON p.medidamh = um.id
-WHERE
-    DATE(p.created_at) > ?       -- Ultima Fecha en Inventario
-AND DATE(p.created_at) &lt;= ?     -- Fecha Actual</sql>
-    <variables_active>Y</variables_active>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>DWH_MYSQL</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>tiempoKey</field>
+        <name>ultima_fecha_inventario</name>
+      </key>
+      <schema>tiendarobertdw2025</schema>
+      <table>dimtiempo</table>
+      <value>
+        <name>fecha</name>
+        <rename>ultimaFechaInventario_fdf</rename>
+        <trim_type>none</trim_type>
+        <type>Date</type>
+      </value>
+    </lookup>
     <attributes/>
     <GUI>
-      <xloc>336</xloc>
-      <yloc>224</yloc>
+      <xloc>224</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>FormatoFecha</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <length>-2</length>
+        <name>ultimaFechaInventario_fdf</name>
+        <precision>-2</precision>
+        <rename/>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>fechaActual_fdf</name>
+        <precision>-2</precision>
+        <rename/>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>128</yloc>
     </GUI>
   </transform>
   <transform>
     <name>LeerFechaCorte</name>
     <type>TableInput</type>
     <description/>
-    <distribute>N</distribute>
+    <distribute>Y</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
@@ -191,13 +341,13 @@ SELECT
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>128</xloc>
-      <yloc>224</yloc>
+      <xloc>64</xloc>
+      <yloc>128</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>Mapear y Limpiar Campos</name>
-    <type>SelectValues</type>
+    <name>LeerProductosActualizados</name>
+    <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -206,61 +356,157 @@ SELECT
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <fields>
-      <field>
-        <length>-2</length>
-        <name>productoID</name>
-        <precision>-2</precision>
-        <rename/>
-      </field>
-      <field>
-        <length>-2</length>
-        <name>nombreProducto</name>
-        <precision>-2</precision>
-        <rename/>
-      </field>
-      <field>
-        <length>-2</length>
-        <name>categoriaProducto</name>
-        <precision>-2</precision>
-        <rename/>
-      </field>
-      <field>
-        <length>-2</length>
-        <name>familiaProducto</name>
-        <precision>-2</precision>
-        <rename/>
-      </field>
-      <field>
-        <length>-2</length>
-        <name>fraccionario</name>
-        <precision>-2</precision>
-        <rename/>
-      </field>
-      <field>
-        <length>-2</length>
-        <name>valorUnidadMedida</name>
-        <precision>-2</precision>
-        <rename/>
-      </field>
-      <field>
-        <length>-2</length>
-        <name>unidadMedida</name>
-        <precision>-2</precision>
-        <rename/>
-      </field>
-      <field>
-        <length>-2</length>
-        <name>presentacion</name>
-        <precision>-2</precision>
-        <rename/>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
+    <connection>SRC_MYSQL</connection>
+    <execute_each_row>Y</execute_each_row>
+    <limit>0</limit>
+    <lookup>FormatoFecha</lookup>
+    <sql>SELECT
+    p.id AS productoID,
+    p.nombreProducto,
+    c.categoria AS categoriaProducto,
+    f.familia AS familiaProducto,
+    IFNULL(p.fraccionario, 'No') AS fraccionario,
+    um.simbolo AS valorUnidadMedida,
+    um.unidad AS unidadMedida,
+    'No especificado' AS presentacion
+FROM
+    productos p
+JOIN
+    categorias c ON p.categoria = c.id
+JOIN
+    familias f ON p.familia = f.id
+JOIN
+    unidad_medidas um ON p.medidamh = um.id
+WHERE
+    p.updated_at IS NOT NULL
+AND
+	DATE(p.updated_at) > ?       -- Ultima Fecha en Inventario
+AND 
+	DATE(p.updated_at) &lt;= ?  
+</sql>
+    <variables_active>Y</variables_active>
     <attributes/>
     <GUI>
-      <xloc>544</xloc>
-      <yloc>224</yloc>
+      <xloc>736</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>LeerProductosNuevos</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>SRC_MYSQL</connection>
+    <execute_each_row>Y</execute_each_row>
+    <limit>0</limit>
+    <lookup>FormatoFecha</lookup>
+    <sql>SELECT
+    p.id AS productoID,
+    p.nombreProducto,
+    c.categoria AS categoriaProducto,
+    f.familia AS familiaProducto,
+    IFNULL(p.fraccionario, 'No') AS fraccionario,
+    um.simbolo AS valorUnidadMedida,
+    um.unidad AS unidadMedida,
+    'No especificado' AS presentacion
+FROM
+    productos p
+JOIN
+    categorias c ON p.categoria = c.id
+JOIN
+    familias f ON p.familia = f.id
+JOIN
+    unidad_medidas um ON p.medidamh = um.id
+WHERE
+	DATE(p.created_at) > ?       -- Ultima Fecha en Inventario
+AND 
+	DATE(p.created_at) &lt;= ?     -- Fecha Actual</sql>
+    <variables_active>Y</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>288</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>ProductoLookup</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>DWH_MYSQL</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>productoID</field>
+        <name>productoID</name>
+      </key>
+      <schema>tiendarobertdw2025</schema>
+      <table>dimproducto</table>
+      <value>
+        <default>-1</default>
+        <name>productoKey</name>
+        <trim_type>none</trim_type>
+        <type>BigNumber</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>416</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>VerificarProducto</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compare>
+      <condition>
+        <conditions>
+</conditions>
+        <function>=</function>
+        <leftvalue>productoKey</leftvalue>
+        <negated>N</negated>
+        <operator>-</operator>
+        <value>
+          <isnull>N</isnull>
+          <length>-1</length>
+          <mask>######0.0###################;-######0.0###################</mask>
+          <name>constant</name>
+          <precision>-1</precision>
+          <text>-1.0</text>
+          <type>BigNumber</type>
+        </value>
+      </condition>
+    </compare>
+    <send_true_to>CargarProductosNuevos</send_true_to>
+    <attributes/>
+    <GUI>
+      <xloc>752</xloc>
+      <yloc>416</yloc>
     </GUI>
   </transform>
   <transform_error_handling>
