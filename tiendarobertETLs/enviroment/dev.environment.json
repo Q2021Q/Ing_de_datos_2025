@@ -1,0 +1,48 @@
+{
+  "variables" : [ {
+    "name" : "SRC_DB_HOST",
+    "value" : "localhost",
+    "description" : "Host de la base de datos origen"
+  }, {
+    "name" : "SRC_DB_PORT",
+    "value" : "3306",
+    "description" : "Puerto de la base de datos origen"
+  }, {
+    "name" : "SRC_DB_NAME",
+    "value" : "tiendarobert_bd_poblado",
+    "description" : "Nombre de la base de datos origen"
+  }, {
+    "name" : "SRC_DB_USER",
+    "value" : "root",
+    "description" : "Usuario de la base de datos origen"
+  }, {
+    "name" : "SRC_DB_PASS",
+    "value" : "admin",
+    "description" : "Contraseña de la base de datos origen"
+  }, {
+    "name" : "DWH_DB_HOST",
+    "value" : "localhost",
+    "description" : "Host de la base de datos DWH"
+  }, {
+    "name" : "DWH_DB_PORT",
+    "value" : "3306",
+    "description" : "Puerto de la base de datos DWH"
+  }, {
+    "name" : "DWH_DB_NAME",
+    "value" : "tiendarobertdw2025",
+    "description" : "Nombre de la base de datos DWH"
+  }, {
+    "name" : "DWH_DB_USER",
+    "value" : "root",
+    "description" : "Usuario de la base de datos DWH"
+  }, {
+    "name" : "DWH_DB_PASS",
+    "value" : "admin",
+    "description" : "Contraseña de la base de datos DWH"
+  } ],
+  "name" : "dev",
+  "description" : "Entorno de desarrollo local con base de datos origen y DWH en MySQL",
+  "configurationFiles" : [ ],
+  "type" : "ProjectEnvironment",
+  "projectName" : "Ing_de_datos_2025"
+}

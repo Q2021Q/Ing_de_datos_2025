@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>DiasSinTransacciones </name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description/>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <created_date>2025/10/21 12:11:27.842</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2025/10/21 12:11:27.842</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <order>
+    <hop>
+      <from>LeerFechas</from>
+      <to>JoinRows                    </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LeerProductos</from>
+      <to>JoinRows                    </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>JoinRows                    </from>
+      <to>OrdenarCartesiano                                    </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LeerSnapshots                            </from>
+      <to>OrdenarSnapshots</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>OrdenarCartesiano                                    </from>
+      <to>MergeJoinSnapshots</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>OrdenarSnapshots</from>
+      <to>MergeJoinSnapshots</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>MergeJoinSnapshots</from>
+      <to>IfNull             </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LeerStockBase</from>
+      <to>LookupStockBase                                 </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>IfNull             </from>
+      <to>LookupStockBase                                 </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>OrdenarPorGrupo</from>
+      <to>RellenarFaltantes</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>RellenarFaltantes</from>
+      <to>FiltrarFaltantes                              </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>FiltrarFaltantes                              </from>
+      <to>PrepararSalida</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>PrepararSalida</from>
+      <to>CargarFactInventario</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LeerCostosUnitarios</from>
+      <to>LookupCostosUnitarios                                            </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LookupStockBase                                 </from>
+      <to>LookupCostosUnitarios                                            </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LookupCostosUnitarios                                            </from>
+      <to>OrdenarPorGrupo</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>CargarFactInventario</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <commit>1000</commit>
+    <connection>DWH_MYSQL</connection>
+    <fields>
+      <field>
+        <column_name>productoKey</column_name>
+        <stream_name>productoKey</stream_name>
+      </field>
+      <field>
+        <column_name>sucursalKey</column_name>
+        <stream_name>sucursalKey</stream_name>
+      </field>
+      <field>
+        <column_name>fechaInventarioKey</column_name>
+        <stream_name>fechaInventarioKey</stream_name>
+      </field>
+      <field>
+        <column_name>stockInicial</column_name>
+        <stream_name>stockInicial</stream_name>
+      </field>
+      <field>
+        <column_name>stockFinal</column_name>
+        <stream_name>stockFinal</stream_name>
+      </field>
+      <field>
+        <column_name>variacionStock</column_name>
+        <stream_name>variacionStock</stream_name>
+      </field>
+      <field>
+        <column_name>costoSinIva</column_name>
+        <stream_name>costoSinIva</stream_name>
+      </field>
+      <field>
+        <column_name>costoConIva</column_name>
+        <stream_name>costoConIva</stream_name>
+      </field>
+    </fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <specify_fields>Y</specify_fields>
+    <table>factInventario</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>N</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>272</xloc>
+      <yloc>592</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>FiltrarFaltantes                              </name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compare>
+      <condition>
+        <conditions>
+</conditions>
+        <function>=</function>
+        <leftvalue>nuevo</leftvalue>
+        <negated>N</negated>
+        <operator>-</operator>
+        <value>
+          <isnull>N</isnull>
+          <length>-1</length>
+          <mask>####0;-####0</mask>
+          <name>constant</name>
+          <precision>0</precision>
+          <text>1</text>
+          <type>Integer</type>
+        </value>
+      </condition>
+    </compare>
+    <send_true_to>PrepararSalida</send_true_to>
+    <attributes/>
+    <GUI>
+      <xloc>576</xloc>
+      <yloc>480</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>IfNull             </name>
+    <type>Janino</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <formula>
+      <field_name>faltante</field_name>
+      <formula_string>stockFinal == null ? 1 : 0</formula_string>
+      <value_type>Integer</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <replace_field/>
+    </formula>
+    <attributes/>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>JoinRows                    </name>
+    <type>JoinRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache_size>2000</cache_size>
+    <compare>
+      <condition>
+        <conditions>
+</conditions>
+        <function>=</function>
+        <negated>N</negated>
+        <operator>-</operator>
+      </condition>
+    </compare>
+    <directory>%%java.io.tmpdir%%</directory>
+    <main>LeerProductos</main>
+    <prefix>out</prefix>
+    <attributes/>
+    <GUI>
+      <xloc>368</xloc>
+      <yloc>32</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>LeerCostosUnitarios</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>SRC_MYSQL</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT 
+producto AS productoID_SRC, 
+costosiva AS costosiva_SRC, costociva AS costociva_SRC 
+FROM precios;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>352</xloc>
+      <yloc>400</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>LeerFechas</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DWH_MYSQL</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+  tiempoKey,         -- INT estilo 20240101
+  fecha              -- DATE estándar 'YYYY-MM-DD'
+FROM DimTiempo
+WHERE tiempoKey BETWEEN 20240101 AND 20241231
+ORDER BY fecha;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>32</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>LeerProductos</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DWH_MYSQL</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT DISTINCT
+  dp.productoID,
+  dp.productoKey,
+  ds.sucursalKey
+FROM dimProducto AS dp
+CROSS JOIN dimSucursal AS ds
+WHERE ds.numeroSucursal BETWEEN 1 AND 3;   -- solo sucursales 1,2,3
+</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>592</xloc>
+      <yloc>32</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>LeerSnapshots                            </name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DWH_MYSQL</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+  fi.productoKey,
+  fi.sucursalKey,
+  fi.fechaInventarioKey,
+  fi.stockInicial,
+  fi.stockFinal,
+  fi.variacionStock
+FROM factInventario AS fi
+JOIN dimSucursal AS ds
+  ON ds.sucursalKey = fi.sucursalKey
+WHERE fi.fechaInventarioKey BETWEEN 20240101 AND 20241231
+  AND ds.numeroSucursal IN (1,2,3);</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>592</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>LeerStockBase</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DWH_MYSQL</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+  productoKey,
+  sucursalKey,
+  stockFinal     AS stockBase
+FROM factInventario
+WHERE fechaInventarioKey = 20231231;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>352</xloc>
+      <yloc>320</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>LookupCostosUnitarios                                            </name>
+    <type>StreamLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <from>LeerCostosUnitarios</from>
+    <input_sorted>N</input_sorted>
+    <preserve_memory>Y</preserve_memory>
+    <sorted_list>N</sorted_list>
+    <integer_pair>N</integer_pair>
+    <lookup>
+      <key>
+        <name>productoID</name>
+        <field>productoID_SRC</field>
+      </key>
+      <value>
+        <name>costosiva_SRC</name>
+        <rename>costoSinIva_uni</rename>
+        <default>0</default>
+        <type>Number</type>
+      </value>
+      <value>
+        <name>costociva_SRC</name>
+        <rename>costoConIva_uni</rename>
+        <default>0</default>
+        <type>Number</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>400</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>LookupStockBase                                 </name>
+    <type>StreamLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <from>LeerStockBase</from>
+    <input_sorted>N</input_sorted>
+    <preserve_memory>Y</preserve_memory>
+    <sorted_list>N</sorted_list>
+    <integer_pair>N</integer_pair>
+    <lookup>
+      <key>
+        <name>productoKey</name>
+        <field>productoKey</field>
+      </key>
+      <key>
+        <name>sucursalKey</name>
+        <field>sucursalKey</field>
+      </key>
+      <value>
+        <name>stockBase</name>
+        <rename>stockBase</rename>
+        <default>0</default>
+        <type>BigNumber</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>320</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>MergeJoinSnapshots</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>LEFT OUTER</join_type>
+    <keys_1>
+      <key>productoKey</key>
+      <key>sucursalKey</key>
+      <key>tiempoKey</key>
+    </keys_1>
+    <keys_2>
+      <key>productoKey</key>
+      <key>sucursalKey</key>
+      <key>fechaInventarioKey</key>
+    </keys_2>
+    <transform1>OrdenarCartesiano                                    </transform1>
+    <transform2>OrdenarSnapshots</transform2>
+    <attributes/>
+    <GUI>
+      <xloc>368</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>OrdenarCartesiano                                    </name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compress>N</compress>
+    <compress_variables/>
+    <directory>${java.io.tmpdir}</directory>
+    <fields>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>productoKey</name>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>sucursalKey</name>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>tiempoKey</name>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <free_memory/>
+    <sort_prefix>out</sort_prefix>
+    <sort_size>1000000</sort_size>
+    <unique_rows>N</unique_rows>
+    <attributes/>
+    <GUI>
+      <xloc>368</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>OrdenarPorGrupo</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compress>N</compress>
+    <compress_variables/>
+    <directory>${java.io.tmpdir}</directory>
+    <fields>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>productoKey</name>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>sucursalKey</name>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>tiempoKey</name>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <free_memory/>
+    <sort_prefix>out</sort_prefix>
+    <sort_size>1000000</sort_size>
+    <unique_rows>N</unique_rows>
+    <attributes/>
+    <GUI>
+      <xloc>160</xloc>
+      <yloc>480</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>OrdenarSnapshots</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compress>N</compress>
+    <directory>${java.io.tmpdir}</directory>
+    <fields>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>productoKey</name>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>sucursalKey</name>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>fechaInventarioKey</name>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <sort_prefix>out</sort_prefix>
+    <sort_size>1000000</sort_size>
+    <unique_rows>N</unique_rows>
+    <attributes/>
+    <GUI>
+      <xloc>592</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>PrepararSalida</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <length>-2</length>
+        <name>productoKey</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>sucursalKey</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>tiempoKey</name>
+        <precision>-2</precision>
+        <rename>fechaInventarioKey</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>out_stockInicial</name>
+        <precision>-2</precision>
+        <rename>stockInicial</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>out_stockFinal</name>
+        <precision>-2</precision>
+        <rename>stockFinal</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>out_variacionStock</name>
+        <precision>-2</precision>
+        <rename>variacionStock</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>out_costoSinIva</name>
+        <precision>-2</precision>
+        <rename>costoSinIva</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>out_costoConIva</name>
+        <precision>-2</precision>
+        <rename>costoConIva</rename>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>576</xloc>
+      <yloc>592</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>RellenarFaltantes</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>// ===== RellenarFaltantes (con costos unitarios de entrada) =====
+
+// Identificador de grupo producto–sucursal
+var grupo = productoKey + '|' + sucursalKey;
+
+// Normaliza unitarios (si vienen null)
+var unitSin = (costoSinIva_uni == null ? 0.0 : costoSinIva_uni * 1.0);
+var unitCon = (costoConIva_uni == null ? 0.0 : costoConIva_uni * 1.0);
+
+// Reinicio al cambiar de grupo
+if (typeof __grupo === 'undefined' || __grupo != grupo) {
+  __grupo = grupo;
+  __ultimoStock = (stockBase == null ? 0.0 : stockBase * 1.0);
+}
+
+// Si el día ya tiene snapshot (faltante = 0), respétalo
+if (faltante == 0) {
+  out_stockInicial   = (stockInicial == null ? __ultimoStock : stockInicial * 1.0);
+  out_stockFinal     = (stockFinal   == null ? __ultimoStock : stockFinal   * 1.0);
+  out_variacionStock = out_stockFinal - out_stockInicial;
+
+  // Costos del día = unitario * stockFinal del día
+  out_costoSinIva = unitSin * out_stockFinal;
+  out_costoConIva = unitCon * out_stockFinal;
+
+  __ultimoStock = out_stockFinal; // preparar siguiente día
+  nuevo = 0; // no insertar (ya existía)
+} else {
+  // Día faltante: copiar stock anterior
+  out_stockInicial   = __ultimoStock;
+  out_stockFinal     = __ultimoStock;
+  out_variacionStock = 0.0;
+
+  // Costos del día = unitario * stockFinal del día (arrastre)
+  out_costoSinIva = unitSin * out_stockFinal;
+  out_costoConIva = unitCon * out_stockFinal;
+
+  // __ultimoStock no cambia (sin movimiento)
+  nuevo = 1; // éste sí se inserta
+}
+</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>out_stockInicial</name>
+        <rename>out_stockInicial</rename>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>out_stockFinal</name>
+        <rename>out_stockFinal</rename>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>out_variacionStock</name>
+        <rename>out_variacionStock</rename>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>out_costoSinIva</name>
+        <rename>out_costoSinIva</rename>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>out_costoConIva</name>
+        <rename>out_costoConIva</rename>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>nuevo</name>
+        <rename>nuevo</rename>
+        <type>Integer</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>352</xloc>
+      <yloc>480</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>
