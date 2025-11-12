@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>factMovimiento</name>
+    <name>CargaIncrementalFactMovimineto</name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -13,13 +13,23 @@
     <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
     <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
     <created_user>-</created_user>
-    <created_date>2025/09/29 19:51:20.986</created_date>
+    <created_date>2025/10/30 19:03:25.807</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2025/09/29 19:51:20.986</modified_date>
+    <modified_date>2025/10/30 19:03:25.807</modified_date>
   </info>
   <notepads>
   </notepads>
   <order>
+    <hop>
+      <from>Group by</from>
+      <to>LookupDimProducto</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>LeerTransaccion</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
     <hop>
       <from>LookupDimProducto</from>
       <to>LookupDimSucursal</to>
@@ -41,18 +51,28 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Group by</from>
-      <to>LookupDimProducto</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>LeerTransaccion</from>
-      <to>Sort rows</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Sort rows</from>
       <to>Group by</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>FechaActualLookup</from>
+      <to>SelectDate</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>FechaInventarioLookup</from>
+      <to>FechaActualLookup</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Get ultima fecha del DWH </from>
+      <to>FechaInventarioLookup</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>SelectDate</from>
+      <to>LeerTransaccion</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -113,8 +133,127 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>560</xloc>
-      <yloc>464</yloc>
+      <xloc>1136</xloc>
+      <yloc>512</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>FechaActualLookup</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>DWH_MYSQL</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>tiempoKey</field>
+        <name>fecha_actual</name>
+      </key>
+      <schema>tiendarobertdw2025</schema>
+      <table>dimtiempo</table>
+      <value>
+        <name>fecha</name>
+        <rename>fechaActual_fdf</rename>
+        <trim_type>none</trim_type>
+        <type>Date</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>464</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>FechaInventarioLookup</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache>Y</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>DWH_MYSQL</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>tiempoKey</field>
+        <name>ultima_fecha_inventario</name>
+      </key>
+      <schema>tiendarobertdw2025</schema>
+      <table>dimtiempo</table>
+      <value>
+        <name>fecha</name>
+        <rename>ultimaFechaInventario_fdf</rename>
+        <trim_type>none</trim_type>
+        <type>Date</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>304</xloc>
+      <yloc>128</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Get ultima fecha del DWH </name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>DWH_MYSQL</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+  /* última fecha ya cargada */
+  (SELECT MAX(fechaMovimientoKey) FROM factMovimiento) AS ultima_fecha_inventario,
+
+
+ /* Días después de la última fecha cargada */
+  (SELECT
+    CAST(
+      DATE_FORMAT(
+        DATE_ADD(STR_TO_DATE(MAX(fechaMovimientoKey), '%Y%m%d'), INTERVAL 1 DAY),
+        '%Y%m%d'
+      ) AS UNSIGNED
+    )
+  FROM factMovimiento
+) AS fecha_actual;
+
+
+/* Fecha del día actual 
+  (SELECT MAX(tiempoKey)
+  FROM dimtiempo
+  WHERE fecha &lt;= CURDATE()) AS fecha_actual; */
+</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>128</yloc>
     </GUI>
   </transform>
   <transform>
@@ -167,8 +306,8 @@
     <prefix>grp</prefix>
     <attributes/>
     <GUI>
-      <xloc>160</xloc>
-      <yloc>176</yloc>
+      <xloc>736</xloc>
+      <yloc>224</yloc>
     </GUI>
   </transform>
   <transform>
@@ -183,8 +322,9 @@
       <schema_name/>
     </partitioning>
     <connection>SRC_MYSQL</connection>
-    <execute_each_row>N</execute_each_row>
+    <execute_each_row>Y</execute_each_row>
     <limit>0</limit>
+    <lookup>SelectDate</lookup>
     <sql>
 -- Compras
 SELECT 
@@ -203,8 +343,8 @@ JOIN
     productos AS prod ON cd.producto = prod.id
 JOIN
     precios AS p ON prod.id = p.producto
-WHERE DATE(c.fecha) >= '2024-01-01'       -- Ultima Fecha en Inventario
-AND DATE(c.fecha) &lt;= '2024-01-02'    -- Fecha Actual
+WHERE DATE(c.fecha) > ?       -- Ultima Fecha en Inventario
+AND DATE(c.fecha) &lt;= ?     -- Fecha Actual
 UNION ALL
 -- Ventas --------------------------------------------------
 SELECT
@@ -223,8 +363,8 @@ JOIN
     productos AS prod ON vd.producto = prod.id
 JOIN
     precios AS p ON prod.id = p.producto
-WHERE DATE(v.fecha) >= '2024-01-01'      -- Ultima Fecha en Inventario
-AND DATE(v.fecha) &lt;=  '2024-01-02'     -- Fecha Actual
+WHERE DATE(v.fecha) > ?       -- Ultima Fecha en Inventario
+AND DATE(v.fecha) &lt;= ?     -- Fecha Actual
 -- Devoluciones --------------------------------------------------
 UNION ALL
 SELECT
@@ -243,8 +383,8 @@ JOIN
     productos AS prod ON dd.producto = prod.id
 JOIN
     precios AS p ON prod.id = p.producto
-WHERE DATE(d.fecha) >=  '2024-01-01'       -- Ultima Fecha en Inventario
-AND DATE(d.fecha) &lt;=  '2024-01-02'    -- Fecha Actual
+WHERE DATE(d.fecha) > ?       -- Ultima Fecha en Inventario
+AND DATE(d.fecha) &lt;= ?     -- Fecha Actualf
 -- Anulaciones --------------------------------------------------
 UNION ALL
 SELECT
@@ -263,14 +403,14 @@ JOIN
     productos AS prod ON ad.producto = prod.id
 JOIN
     precios AS p ON prod.id = p.producto
-WHERE DATE(a.fecha) >=  '2024-01-01'       -- Ultima Fecha en Inventario
-AND DATE(a.fecha) &lt;=  '2024-01-02'    -- Fecha Actual
--- Anulaciones -------------------------------------------</sql>
+WHERE DATE(a.fecha) > ?       -- Ultima Fecha en Inventario
+AND DATE(a.fecha) &lt;= ?     -- Fecha Actual
+</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>176</xloc>
-      <yloc>80</yloc>
+      <xloc>752</xloc>
+      <yloc>128</yloc>
     </GUI>
   </transform>
   <transform>
@@ -308,8 +448,8 @@ AND DATE(a.fecha) &lt;=  '2024-01-02'    -- Fecha Actual
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>560</xloc>
-      <yloc>208</yloc>
+      <xloc>1136</xloc>
+      <yloc>256</yloc>
     </GUI>
   </transform>
   <transform>
@@ -347,8 +487,8 @@ AND DATE(a.fecha) &lt;=  '2024-01-02'    -- Fecha Actual
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>160</xloc>
-      <yloc>288</yloc>
+      <xloc>736</xloc>
+      <yloc>336</yloc>
     </GUI>
   </transform>
   <transform>
@@ -386,8 +526,8 @@ AND DATE(a.fecha) &lt;=  '2024-01-02'    -- Fecha Actual
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>560</xloc>
-      <yloc>336</yloc>
+      <xloc>1136</xloc>
+      <yloc>384</yloc>
     </GUI>
   </transform>
   <transform>
@@ -425,8 +565,76 @@ AND DATE(a.fecha) &lt;=  '2024-01-02'    -- Fecha Actual
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>144</xloc>
-      <yloc>416</yloc>
+      <xloc>720</xloc>
+      <yloc>464</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>SelectDate</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <length>-2</length>
+        <name>ultimaFechaInventario_fdf</name>
+        <precision>-2</precision>
+        <rename>fecha_1</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>fechaActual_fdf</name>
+        <precision>-2</precision>
+        <rename>fecha_2</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>ultimaFechaInventario_fdf</name>
+        <precision>-2</precision>
+        <rename>fecha_3</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>fechaActual_fdf</name>
+        <precision>-2</precision>
+        <rename>fecha_4</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>ultimaFechaInventario_fdf</name>
+        <precision>-2</precision>
+        <rename>fecha_5</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>fechaActual_fdf</name>
+        <precision>-2</precision>
+        <rename>fecha_6</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>ultimaFechaInventario_fdf</name>
+        <precision>-2</precision>
+        <rename>fecha_7</rename>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>fechaActual_fdf</name>
+        <precision>-2</precision>
+        <rename>fecha_8</rename>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>624</xloc>
+      <yloc>128</yloc>
     </GUI>
   </transform>
   <transform>
@@ -481,8 +689,8 @@ AND DATE(a.fecha) &lt;=  '2024-01-02'    -- Fecha Actual
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>576</xloc>
-      <yloc>112</yloc>
+      <xloc>1152</xloc>
+      <yloc>160</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

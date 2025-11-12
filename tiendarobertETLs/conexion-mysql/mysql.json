@@ -3,7 +3,7 @@
         "variables" : [
             { "name": "SRC_DB_HOST", "value": "localhost" },
             { "name": "SRC_DB_PORT", "value": "3306" },
-            { "name": "SRC_DB_NAME", "value": "TiendaRobert_BD_Poblado" },
+            { "name": "SRC_DB_NAME", "value": "TiendaRobert_BD" },
             { "name": "SRC_DB_USER", "value": "root" },
             { "name": "SRC_DB_PASS", "value": "root" },
 

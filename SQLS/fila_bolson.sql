@@ -15,23 +15,3 @@ INSERT INTO DimTiempo (
   'NO',
   0
 );
-
-
-INSERT INTO DimProveedor (
-  proveedorKey, proveedorID, nitProveedor, nombreProveedor,
-  tipoPersona, codigoTipoPersona, actividadEconomica, codigoActividadEconomica,
-  giroProveedor, categoriaProveedor, departamentoProveedor, codigoDepProveedor,
-  municipioProveedor, codigoMunProveedor, distritoProveedor, codigoDisProveedor
-) VALUES (
-  0,               -- Fila bolsón
-  0,               -- proveedorID ficticio
-  'N/A',
-  'N/A',
-  'N/A', 'N/A',
-  'N/A', 'N/A',
-  'N/A', 'N/A',
-  'N/A', '00',
-  'N/A', '00',
-  'N/A', '00'
-);
-SET sql_mode = @OLD_SQL_MODE; -- restauras el modo
