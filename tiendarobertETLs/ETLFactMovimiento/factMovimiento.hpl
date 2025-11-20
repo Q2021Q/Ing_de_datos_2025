@@ -204,7 +204,7 @@ JOIN
 JOIN
     precios AS p ON prod.id = p.producto
 WHERE DATE(c.fecha) >= '2024-01-01'       -- Ultima Fecha en Inventario
-AND DATE(c.fecha) &lt;= '2024-01-02'    -- Fecha Actual
+AND DATE(c.fecha) &lt;= '2024-01-01'    -- Fecha Actual
 UNION ALL
 -- Ventas --------------------------------------------------
 SELECT
@@ -224,7 +224,7 @@ JOIN
 JOIN
     precios AS p ON prod.id = p.producto
 WHERE DATE(v.fecha) >= '2024-01-01'      -- Ultima Fecha en Inventario
-AND DATE(v.fecha) &lt;=  '2024-01-02'     -- Fecha Actual
+AND DATE(v.fecha) &lt;=  '2024-01-01'     -- Fecha Actual
 -- Devoluciones --------------------------------------------------
 UNION ALL
 SELECT
@@ -244,7 +244,7 @@ JOIN
 JOIN
     precios AS p ON prod.id = p.producto
 WHERE DATE(d.fecha) >=  '2024-01-01'       -- Ultima Fecha en Inventario
-AND DATE(d.fecha) &lt;=  '2024-01-02'    -- Fecha Actual
+AND DATE(d.fecha) &lt;=  '2024-01-01'    -- Fecha Actual
 -- Anulaciones --------------------------------------------------
 UNION ALL
 SELECT
@@ -264,7 +264,7 @@ JOIN
 JOIN
     precios AS p ON prod.id = p.producto
 WHERE DATE(a.fecha) >=  '2024-01-01'       -- Ultima Fecha en Inventario
-AND DATE(a.fecha) &lt;=  '2024-01-02'    -- Fecha Actual
+AND DATE(a.fecha) &lt;=  '2024-01-01'    -- Fecha Actual
 -- Anulaciones -------------------------------------------</sql>
     <variables_active>N</variables_active>
     <attributes/>

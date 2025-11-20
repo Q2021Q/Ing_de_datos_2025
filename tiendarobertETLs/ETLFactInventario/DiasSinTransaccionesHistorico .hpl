@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>DiasSinTransacciones </name>
+    <name>DiasSinTransaccionesHistorico </name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -162,7 +162,7 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>272</xloc>
+      <xloc>304</xloc>
       <yloc>592</yloc>
     </GUI>
   </transform>
@@ -199,7 +199,7 @@
     <send_true_to>PrepararSalida</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>576</xloc>
+      <xloc>608</xloc>
       <yloc>480</yloc>
     </GUI>
   </transform>
@@ -224,7 +224,7 @@
     </formula>
     <attributes/>
     <GUI>
-      <xloc>160</xloc>
+      <xloc>192</xloc>
       <yloc>224</yloc>
     </GUI>
   </transform>
@@ -254,7 +254,7 @@
     <prefix>out</prefix>
     <attributes/>
     <GUI>
-      <xloc>368</xloc>
+      <xloc>400</xloc>
       <yloc>32</yloc>
     </GUI>
   </transform>
@@ -279,7 +279,7 @@ FROM precios;</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>352</xloc>
+      <xloc>384</xloc>
       <yloc>400</yloc>
     </GUI>
   </transform>
@@ -301,12 +301,12 @@ FROM precios;</sql>
   tiempoKey,         -- INT estilo 20240101
   fecha              -- DATE estándar 'YYYY-MM-DD'
 FROM DimTiempo
-WHERE tiempoKey BETWEEN 20240101 AND 20241231
+WHERE tiempoKey BETWEEN 20240101 AND 20240101
 ORDER BY fecha;</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>160</xloc>
+      <xloc>192</xloc>
       <yloc>32</yloc>
     </GUI>
   </transform>
@@ -335,7 +335,7 @@ WHERE ds.numeroSucursal BETWEEN 1 AND 3;   -- solo sucursales 1,2,3
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>592</xloc>
+      <xloc>624</xloc>
       <yloc>32</yloc>
     </GUI>
   </transform>
@@ -363,12 +363,12 @@ WHERE ds.numeroSucursal BETWEEN 1 AND 3;   -- solo sucursales 1,2,3
 FROM factInventario AS fi
 JOIN dimSucursal AS ds
   ON ds.sucursalKey = fi.sucursalKey
-WHERE fi.fechaInventarioKey BETWEEN 20240101 AND 20241231
+WHERE fi.fechaInventarioKey BETWEEN 20240101 AND 20240101
   AND ds.numeroSucursal IN (1,2,3);</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>592</xloc>
+      <xloc>624</xloc>
       <yloc>128</yloc>
     </GUI>
   </transform>
@@ -395,7 +395,7 @@ WHERE fechaInventarioKey = 20231231;</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>352</xloc>
+      <xloc>384</xloc>
       <yloc>320</yloc>
     </GUI>
   </transform>
@@ -435,7 +435,7 @@ WHERE fechaInventarioKey = 20231231;</sql>
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>160</xloc>
+      <xloc>192</xloc>
       <yloc>400</yloc>
     </GUI>
   </transform>
@@ -473,7 +473,7 @@ WHERE fechaInventarioKey = 20231231;</sql>
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>160</xloc>
+      <xloc>192</xloc>
       <yloc>320</yloc>
     </GUI>
   </transform>
@@ -503,7 +503,7 @@ WHERE fechaInventarioKey = 20231231;</sql>
     <transform2>OrdenarSnapshots</transform2>
     <attributes/>
     <GUI>
-      <xloc>368</xloc>
+      <xloc>400</xloc>
       <yloc>224</yloc>
     </GUI>
   </transform>
@@ -519,7 +519,6 @@ WHERE fechaInventarioKey = 20231231;</sql>
       <schema_name/>
     </partitioning>
     <compress>N</compress>
-    <compress_variables/>
     <directory>${java.io.tmpdir}</directory>
     <fields>
       <field>
@@ -547,13 +546,12 @@ WHERE fechaInventarioKey = 20231231;</sql>
         <presorted>N</presorted>
       </field>
     </fields>
-    <free_memory/>
     <sort_prefix>out</sort_prefix>
     <sort_size>1000000</sort_size>
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>368</xloc>
+      <xloc>400</xloc>
       <yloc>128</yloc>
     </GUI>
   </transform>
@@ -569,7 +567,6 @@ WHERE fechaInventarioKey = 20231231;</sql>
       <schema_name/>
     </partitioning>
     <compress>N</compress>
-    <compress_variables/>
     <directory>${java.io.tmpdir}</directory>
     <fields>
       <field>
@@ -597,13 +594,12 @@ WHERE fechaInventarioKey = 20231231;</sql>
         <presorted>N</presorted>
       </field>
     </fields>
-    <free_memory/>
     <sort_prefix>out</sort_prefix>
     <sort_size>1000000</sort_size>
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>160</xloc>
+      <xloc>192</xloc>
       <yloc>480</yloc>
     </GUI>
   </transform>
@@ -651,7 +647,7 @@ WHERE fechaInventarioKey = 20231231;</sql>
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>592</xloc>
+      <xloc>624</xloc>
       <yloc>224</yloc>
     </GUI>
   </transform>
@@ -717,7 +713,7 @@ WHERE fechaInventarioKey = 20231231;</sql>
     </fields>
     <attributes/>
     <GUI>
-      <xloc>576</xloc>
+      <xloc>608</xloc>
       <yloc>592</yloc>
     </GUI>
   </transform>
@@ -832,7 +828,7 @@ if (faltante == 0) {
     </fields>
     <attributes/>
     <GUI>
-      <xloc>352</xloc>
+      <xloc>384</xloc>
       <yloc>480</yloc>
     </GUI>
   </transform>

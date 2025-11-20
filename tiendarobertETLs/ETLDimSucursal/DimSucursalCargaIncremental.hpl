@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>DimSucursal</name>
+    <name>DimSucursalCargaIncremental</name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -89,8 +89,8 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>288</xloc>
-      <yloc>320</yloc>
+      <xloc>672</xloc>
+      <yloc>160</yloc>
     </GUI>
   </transform>
   <transform>
@@ -115,13 +115,10 @@
         <condition>=</condition>
         <field>sucursalID</field>
         <name>sucursalID</name>
-        <name2/>
       </key>
-      <orderby/>
       <schema>tiendarobertdw2025</schema>
       <table>DimSucursal</table>
       <value>
-        <default/>
         <name>sucursalKey</name>
         <rename>lookup_sucursalKey</rename>
         <trim_type>none</trim_type>
@@ -130,8 +127,8 @@
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>496</xloc>
-      <yloc>144</yloc>
+      <xloc>384</xloc>
+      <yloc>160</yloc>
     </GUI>
   </transform>
   <transform>
@@ -158,8 +155,8 @@
     <send_true_to>CargarDimSucursal</send_true_to>
     <attributes/>
     <GUI>
-      <xloc>496</xloc>
-      <yloc>320</yloc>
+      <xloc>512</xloc>
+      <yloc>160</yloc>
     </GUI>
   </transform>
   <transform>
@@ -191,8 +188,8 @@ LEFT JOIN
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>288</xloc>
-      <yloc>144</yloc>
+      <xloc>224</xloc>
+      <yloc>160</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

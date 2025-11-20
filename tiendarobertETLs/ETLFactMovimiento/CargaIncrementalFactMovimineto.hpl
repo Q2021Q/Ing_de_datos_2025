@@ -133,8 +133,8 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>1136</xloc>
-      <yloc>512</yloc>
+      <xloc>640</xloc>
+      <yloc>592</yloc>
     </GUI>
   </transform>
   <transform>
@@ -171,7 +171,7 @@
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>464</xloc>
+      <xloc>224</xloc>
       <yloc>128</yloc>
     </GUI>
   </transform>
@@ -209,8 +209,8 @@
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>304</xloc>
-      <yloc>128</yloc>
+      <xloc>640</xloc>
+      <yloc>32</yloc>
     </GUI>
   </transform>
   <transform>
@@ -252,8 +252,8 @@
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>112</xloc>
-      <yloc>128</yloc>
+      <xloc>224</xloc>
+      <yloc>32</yloc>
     </GUI>
   </transform>
   <transform>
@@ -306,8 +306,8 @@
     <prefix>grp</prefix>
     <attributes/>
     <GUI>
-      <xloc>736</xloc>
-      <yloc>224</yloc>
+      <xloc>224</xloc>
+      <yloc>336</yloc>
     </GUI>
   </transform>
   <transform>
@@ -409,8 +409,8 @@ AND DATE(a.fecha) &lt;= ?     -- Fecha Actual
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>752</xloc>
-      <yloc>128</yloc>
+      <xloc>224</xloc>
+      <yloc>240</yloc>
     </GUI>
   </transform>
   <transform>
@@ -448,8 +448,8 @@ AND DATE(a.fecha) &lt;= ?     -- Fecha Actual
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>1136</xloc>
-      <yloc>256</yloc>
+      <xloc>640</xloc>
+      <yloc>368</yloc>
     </GUI>
   </transform>
   <transform>
@@ -487,8 +487,8 @@ AND DATE(a.fecha) &lt;= ?     -- Fecha Actual
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>736</xloc>
-      <yloc>336</yloc>
+      <xloc>224</xloc>
+      <yloc>448</yloc>
     </GUI>
   </transform>
   <transform>
@@ -526,8 +526,8 @@ AND DATE(a.fecha) &lt;= ?     -- Fecha Actual
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>1136</xloc>
-      <yloc>384</yloc>
+      <xloc>640</xloc>
+      <yloc>496</yloc>
     </GUI>
   </transform>
   <transform>
@@ -565,8 +565,8 @@ AND DATE(a.fecha) &lt;= ?     -- Fecha Actual
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>720</xloc>
-      <yloc>464</yloc>
+      <xloc>224</xloc>
+      <yloc>592</yloc>
     </GUI>
   </transform>
   <transform>
@@ -633,8 +633,8 @@ AND DATE(a.fecha) &lt;= ?     -- Fecha Actual
     </fields>
     <attributes/>
     <GUI>
-      <xloc>624</xloc>
-      <yloc>128</yloc>
+      <xloc>640</xloc>
+      <yloc>176</yloc>
     </GUI>
   </transform>
   <transform>
@@ -689,8 +689,8 @@ AND DATE(a.fecha) &lt;= ?     -- Fecha Actual
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>1152</xloc>
-      <yloc>160</yloc>
+      <xloc>640</xloc>
+      <yloc>272</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

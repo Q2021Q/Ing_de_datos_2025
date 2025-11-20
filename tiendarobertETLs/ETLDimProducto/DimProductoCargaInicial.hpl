@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>DimProducto</name>
+    <name>DimProductoCargaInicial</name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -88,8 +88,8 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>576</xloc>
-      <yloc>160</yloc>
+      <xloc>416</xloc>
+      <yloc>128</yloc>
     </GUI>
   </transform>
   <transform>
@@ -128,8 +128,8 @@ JOIN medidas m ON m.id = p.medida;
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>368</xloc>
-      <yloc>160</yloc>
+      <xloc>208</xloc>
+      <yloc>128</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

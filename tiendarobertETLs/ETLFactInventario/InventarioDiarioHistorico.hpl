@@ -107,7 +107,7 @@
     <failIfNoFile>Y</failIfNoFile>
     <attributes/>
     <GUI>
-      <xloc>576</xloc>
+      <xloc>608</xloc>
       <yloc>224</yloc>
     </GUI>
   </transform>
@@ -172,7 +172,7 @@
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>112</xloc>
+      <xloc>144</xloc>
       <yloc>496</yloc>
     </GUI>
   </transform>
@@ -192,9 +192,9 @@
     <limit>0</limit>
     <sql>-- Inventario Inicial
 SELECT 
-	producto AS producto_id,
-	sucursal AS sucursal_id,
-	DATE(fecha) AS fechaMovimiento,
+    producto AS producto_id,
+    sucursal AS sucursal_id,
+    DATE(fecha) AS fechaMovimiento,
     cantidad AS cantidadDeProducto,
     costo_unit_si AS costoSinIva,
     costo_unit_ci AS costoConIva
@@ -217,8 +217,8 @@ JOIN
     productos AS prod ON cd.producto = prod.id
 JOIN
     precios AS p ON prod.id = p.producto
--- WHERE DATE(c.fecha) >= '2024-01-01'
--- AND DATE(c.fecha) &lt;= '2024-12-31'
+WHERE DATE(c.fecha) >= '2024-01-01'
+AND DATE(c.fecha) &lt;= '2024-01-01'
 UNION ALL
 -- Ventas --------------------------------------------------
 SELECT
@@ -236,8 +236,8 @@ JOIN
     productos AS prod ON vd.producto = prod.id
 JOIN
     precios AS p ON prod.id = p.producto
--- WHERE DATE(v.fecha) >= '2024-01-01'
--- AND DATE(v.fecha) &lt;= '2024-12-31'
+WHERE DATE(v.fecha) >= '2024-01-01'
+AND DATE(v.fecha) &lt;= '2024-01-01'
 -- Devoluciones --------------------------------------------------
 UNION ALL
 SELECT
@@ -255,8 +255,8 @@ JOIN
     productos AS prod ON dd.producto = prod.id
 JOIN
     precios AS p ON prod.id = p.producto
--- WHERE DATE(d.fecha) >= '2024-01-01'
--- AND DATE(d.fecha) &lt;= '2024-12-31'
+WHERE DATE(d.fecha) >= '2024-01-01'
+AND DATE(d.fecha) &lt;= '2024-01-01'
 -- Anulaciones --------------------------------------------------
 UNION ALL
 SELECT
@@ -274,12 +274,12 @@ JOIN
     productos AS prod ON ad.producto = prod.id
 JOIN
     precios AS p ON prod.id = p.producto
--- WHERE DATE(a.fecha) >= '2024-01-01'
--- AND DATE(a.fecha) &lt;= '2024-12-31'</sql>
+WHERE DATE(a.fecha) >= '2024-01-01'
+AND DATE(a.fecha) &lt;= '2024-01-01'</sql>
     <variables_active>N</variables_active>
     <attributes/>
     <GUI>
-      <xloc>112</xloc>
+      <xloc>144</xloc>
       <yloc>80</yloc>
     </GUI>
   </transform>
@@ -318,7 +318,7 @@ JOIN
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>112</xloc>
+      <xloc>144</xloc>
       <yloc>368</yloc>
     </GUI>
   </transform>
@@ -357,7 +357,7 @@ JOIN
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>352</xloc>
+      <xloc>384</xloc>
       <yloc>368</yloc>
     </GUI>
   </transform>
@@ -396,7 +396,7 @@ JOIN
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>576</xloc>
+      <xloc>608</xloc>
       <yloc>368</yloc>
     </GUI>
   </transform>
@@ -444,7 +444,7 @@ JOIN
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>352</xloc>
+      <xloc>384</xloc>
       <yloc>80</yloc>
     </GUI>
   </transform>
@@ -492,7 +492,7 @@ JOIN
     <unique_rows>N</unique_rows>
     <attributes/>
     <GUI>
-      <xloc>112</xloc>
+      <xloc>144</xloc>
       <yloc>224</yloc>
     </GUI>
   </transform>
@@ -550,7 +550,7 @@ stock_diario = __accCantidad;
     </fields>
     <attributes/>
     <GUI>
-      <xloc>352</xloc>
+      <xloc>384</xloc>
       <yloc>224</yloc>
     </GUI>
   </transform>
@@ -601,7 +601,7 @@ stock_diario = __accCantidad;
     <prefix>grp</prefix>
     <attributes/>
     <GUI>
-      <xloc>576</xloc>
+      <xloc>608</xloc>
       <yloc>80</yloc>
     </GUI>
   </transform>
