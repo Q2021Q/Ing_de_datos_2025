@@ -3,15 +3,15 @@
         "variables" : [
             { "name": "SRC_DB_HOST", "value": "localhost" },
             { "name": "SRC_DB_PORT", "value": "3306" },
-            { "name": "SRC_DB_NAME", "value": "tiendarobert_bd_poblado" },
+            { "name": "SRC_DB_NAME", "value": "TiendaRobert_BD" },
             { "name": "SRC_DB_USER", "value": "root" },
-            { "name": "SRC_DB_PASS", "value": "26145" },
+            { "name": "SRC_DB_PASS", "value": "root" },
 
             { "name": "DWH_DB_HOST", "value": "localhost" },
             { "name": "DWH_DB_PORT", "value": "3306" },
-            { "name": "DWH_DB_NAME", "value": "dwtiendarobert" },
+            { "name": "DWH_DB_NAME", "value": "TiendaRobertDW2025" },
             { "name": "DWH_DB_USER", "value": "root" },
-            { "name": "DWH_DB_PASS", "value": "26145" }
+            { "name": "DWH_DB_PASS", "value": "root" }
         ]
     }
 }
